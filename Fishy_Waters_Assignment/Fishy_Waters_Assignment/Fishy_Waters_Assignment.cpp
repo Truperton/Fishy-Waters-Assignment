@@ -5,6 +5,7 @@
 #include <array>
 #include <SFML/Graphics.hpp>
 #include "Entities.h"
+#include "TileMap.h"
 
 using namespace std;
 using namespace sf;
@@ -14,13 +15,13 @@ bool debuggingMap = true;
 // Game window related variables
 sf::Vector2f theGameWindow_CurrentDimensions(960, 640);
 sf::Vector2f theGameWindow_PerspectiveDimensions(960, 640);
-sf::RenderWindow theGameWindow(sf::VideoMode(theGameWindow_CurrentDimensions.x, theGameWindow_CurrentDimensions.y), "Fishy Waters", sf::Style::Titlebar);
+sf::RenderWindow theGameWindow(sf::VideoMode(theGameWindow_CurrentDimensions.x, theGameWindow_CurrentDimensions.y), "Fishy Waters");
 // Tile Map variables
-Texture currentTileSet;
+TileMap mainTileMap;
 
 // This variable stores a 128x128 tiles map
-array<array<unsigned char, 128>, 128> gameMap;
-Entities MainPlayer;
+array<array<unsigned char, 256>, 256> gameMap;
+Entities MainPlayer("Player");
 
 void InputListener();
 void DrawMap(array<array<char, 128>, 128> inputMap);
@@ -32,34 +33,41 @@ int main()
 
 	// Main main()
 	//              0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25
-	gameMap[0]  = { 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2 };
-	gameMap[1]  = { 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2 };
-	gameMap[2]  = { 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2 };
-	gameMap[3]  = { 2, 2, 2, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 2, 2, 2 };
-	gameMap[4]  = { 2, 2, 2, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 2, 2, 2 };
-	gameMap[5]  = { 2, 2, 2, 1, 1, 2, 2, 1, 1, 1, 1, 1, 1, 2, 2, 2 };
-	gameMap[6]  = { 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2 };
-	gameMap[7]  = { 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2 };
-	gameMap[8]  = { 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2 };
-	gameMap[9]  = { 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2 };
-	gameMap[10] = { 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2 };
-	gameMap[11] = { 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2 };
-	gameMap[12] = { 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2 };
-	gameMap[13] = { 2, 2, 2, 2, 2, 2, 2, 1, 2, 2, 2, 2, 2, 2, 2, 2 };
-	gameMap[14] = { 2, 2, 2, 2, 2, 2, 2, 1, 2, 2, 2, 2, 2, 2, 2, 2 };
-	gameMap[15] = { 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2 };
-	gameMap[16] = { 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2 };
+	gameMap[0]  = { 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14 };
+	gameMap[1]  = { 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14 };
+	gameMap[2]  = { 14, 14,  4,  8,  8,  8,  5,  4,  8,  8,  8,  8,  8,  5, 14, 14 };
+	gameMap[3]  = { 14, 14, 11, 13, 13, 13,  9, 11, 13, 13, 13, 13, 13,  9, 14, 14 };
+	gameMap[4]  = { 14, 14, 11, 13, 13, 13,  9, 11, 13, 13, 13, 13, 13,  9, 14, 14 };
+	gameMap[5]  = { 14, 14, 11, 13, 13,  0,  7, 11, 13, 13, 13, 13, 13,  9, 14, 14 };
+	gameMap[6]  = { 14, 14, 11, 13, 13,  2,  8,  3, 13, 13, 13, 13, 13,  9, 14, 14 };
+	gameMap[7]  = { 14, 14, 11, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13,  9, 14, 14 };
+	gameMap[8]  = { 14, 14, 11, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13,  9, 14, 14 };
+	gameMap[9]  = { 14, 14, 11, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13,  9, 14, 14 };
+	gameMap[10] = { 14, 14, 11, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13,  9, 14, 14 };
+	gameMap[11] = { 14, 14, 11, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13,  9, 14, 14 };
+	gameMap[12] = { 14, 14, 11, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13,  9, 14, 14 };
+	gameMap[13] = { 14, 14,  6, 14, 14, 14, 14, 13, 14, 14, 14, 14, 14, 14, 14, 14 };
+	gameMap[14] = { 14, 14, 14, 14, 14, 14, 14, 13, 14, 14, 14, 14, 14, 14, 14, 14 };
+	gameMap[15] = { 14, 14, 14, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 14 };
+	gameMap[16] = { 14, 14, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 14 };
+	if (!mainTileMap.load("Assets/Tile Sets/Main Tile Set.png", Vector2u(64, 64), gameMap))
+	{
+
+	}
 	//if (!currentTileSet.loadFromFile("Assets/Tilemaps/Temperate TileMap.png")) //The "Temperate TileMap" Sprite
 	//{
 	//	cout << "Error 1: Loading The Game Image(s) Failed. Make Sure ALL Images Are 8-bit-RGBA Images..." << "\n";
 	//	system("pause");
 	//}
-	MainPlayer.position[4][5] = true;
+	MainPlayer.mapPosition = Vector2u(4, 5);
+	//MainPlayer.position[4][5] = true;
     cout << "Game loaded\n";
+
 	while (theGameWindow.isOpen())
 	{
 		InputListener();
 		theGameWindow.clear();
+		theGameWindow.draw(mainTileMap);
 		theGameWindow.display();
 	}
 }
@@ -83,33 +91,37 @@ void InputListener()
 		{
 			if (event.key.code == sf::Keyboard::W)
 			{
-				MainPlayer.Move(MainPlayer.position, gameMap, -1, 0);
+				MainPlayer.Move(gameMap, Vector2u(0, -1));
 				if (debuggingMap)
 				{
+					cout << "W Key Down" << endl;
 					ConsoleMapOutput();
 				}
 			}
 			else if (event.key.code == sf::Keyboard::S)
 			{
-				MainPlayer.Move(MainPlayer.position, gameMap, 1, 0);
+				MainPlayer.Move(gameMap, Vector2u(0, 1));
 				if (debuggingMap)
 				{
+					cout << "S Key Down" << endl;
 					ConsoleMapOutput();
 				}
 			}
 			else if (event.key.code == sf::Keyboard::A)
 			{
-				MainPlayer.Move(MainPlayer.position, gameMap, 0, -1);
+				MainPlayer.Move(gameMap, Vector2u(-1, 0));
 				if (debuggingMap)
 				{
+					cout << "A Key Down" << endl;
 					ConsoleMapOutput();
 				}
 			}
 			else if (event.key.code == sf::Keyboard::D)
 			{
-				MainPlayer.Move(MainPlayer.position, gameMap, 0, 1);
+				MainPlayer.Move(gameMap, Vector2u(1, 0));
 				if (debuggingMap)
 				{
+					cout << "D Key Down" << endl;
 					ConsoleMapOutput();
 				}
 			}
@@ -121,47 +133,21 @@ void InputListener()
 	}
 }
 
+/// <summary>
+/// Outputs a small portion of the map in text form in the console.
+/// </summary>
 void ConsoleMapOutput()
 {
 	// Local Variables
-	char i = -1, j = -1;
+	unsigned char i = -1, j = -1;
 
 	// Main ConsoleMapOutput()
-	for (auto item : gameMap)
-	{
-		++i;
-		for (auto item2 : item)
-		{
-			++j;
-			if (MainPlayer.position[i][j])
-			{
-				cout << "C";
-			}
-			else
-			{
-				cout << +item2;
-			}
-		}
-		j = -1;
-		cout << endl;
-	}
+	cout << +gameMap[MainPlayer.mapPosition.y - 2][MainPlayer.mapPosition.x - 2] << +gameMap[MainPlayer.mapPosition.y - 2][MainPlayer.mapPosition.x - 1] << +gameMap[MainPlayer.mapPosition.y - 2][MainPlayer.mapPosition.x] << +gameMap[MainPlayer.mapPosition.y - 2][MainPlayer.mapPosition.x + 1] << +gameMap[MainPlayer.mapPosition.y - 2][MainPlayer.mapPosition.x + 2] << endl;
+	cout << +gameMap[MainPlayer.mapPosition.y - 1][MainPlayer.mapPosition.x - 2] << +gameMap[MainPlayer.mapPosition.y - 1][MainPlayer.mapPosition.x - 1] << +gameMap[MainPlayer.mapPosition.y - 1][MainPlayer.mapPosition.x] << +gameMap[MainPlayer.mapPosition.y - 1][MainPlayer.mapPosition.x + 1] << +gameMap[MainPlayer.mapPosition.y - 1][MainPlayer.mapPosition.x + 2] << endl;
+	cout << +gameMap[MainPlayer.mapPosition.y][MainPlayer.mapPosition.x - 2] << +gameMap[MainPlayer.mapPosition.y][MainPlayer.mapPosition.x - 1] << "C" << +gameMap[MainPlayer.mapPosition.y][MainPlayer.mapPosition.x + 1] << +gameMap[MainPlayer.mapPosition.y][MainPlayer.mapPosition.x + 2] << endl;
+	cout << +gameMap[MainPlayer.mapPosition.y + 1][MainPlayer.mapPosition.x - 2] << +gameMap[MainPlayer.mapPosition.y + 1][MainPlayer.mapPosition.x - 1] << +gameMap[MainPlayer.mapPosition.y + 1][MainPlayer.mapPosition.x] << +gameMap[MainPlayer.mapPosition.y + 1][MainPlayer.mapPosition.x + 1] << +gameMap[MainPlayer.mapPosition.y + 1][MainPlayer.mapPosition.x + 2] << endl;
+	cout << +gameMap[MainPlayer.mapPosition.y + 2][MainPlayer.mapPosition.x - 2] << +gameMap[MainPlayer.mapPosition.y + 2][MainPlayer.mapPosition.x - 1] << +gameMap[MainPlayer.mapPosition.y + 2][MainPlayer.mapPosition.x] << +gameMap[MainPlayer.mapPosition.y + 2][MainPlayer.mapPosition.x + 1] << +gameMap[MainPlayer.mapPosition.y + 2][MainPlayer.mapPosition.x + 2] << endl;
 	cout << endl;
-	//for (i = 0; i < 127; i++)
-	//{
-	//	for (j = 0; j < 127; j++)
-	//	{
-	//		if (MainPlayer.position[i][j])
-	//		{
-	//			cout << "C";
-	//		}
-	//		else
-	//		{
-	//			cout << +gameMap[i][j];
-	//		}
-	//	}
-	//	cout << endl;
-	//}
-	//cout << endl;
 }
 
 // Run program: Ctrl + F5 or Debug > Start Without Debugging menu
