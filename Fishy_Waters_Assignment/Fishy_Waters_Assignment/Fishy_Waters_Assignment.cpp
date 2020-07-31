@@ -3,28 +3,32 @@
 
 #include <iostream>
 #include <array>
+#include <vector>
 #include <SFML/Graphics.hpp>
-#include "Entities.h"
+#include "Entity.h"
+#include "PlayerCharacter.h"
 #include "TileMap.h"
 
 using namespace std;
 using namespace sf;
 // Global Variables
 // Debugging variables
+
 bool debuggingMap = true;
 // Game window related variables
+
 sf::Vector2f theGameWindow_CurrentDimensions(960, 640);
 sf::Vector2f theGameWindow_PerspectiveDimensions(960, 640);
 sf::RenderWindow theGameWindow(sf::VideoMode(theGameWindow_CurrentDimensions.x, theGameWindow_CurrentDimensions.y), "Fishy Waters");
 // Tile Map variables
-TileMap mainTileMap;
+
+TileMap *mainTileMap;
 
 // This variable stores a 128x128 tiles map
-array<array<unsigned char, 256>, 256> gameMap;
-Entities MainPlayer("Player");
+array<array<unsigned char, 128>, 128> gameMap;
+Entity *MainPlayer;
 
 void InputListener();
-void DrawMap(array<array<char, 128>, 128> inputMap);
 void ConsoleMapOutput();
 
 int main()
@@ -50,26 +54,37 @@ int main()
 	gameMap[14] = { 14, 14, 14, 14, 14, 14, 14, 13, 14, 14, 14, 14, 14, 14, 14, 14 };
 	gameMap[15] = { 14, 14, 14, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 14 };
 	gameMap[16] = { 14, 14, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 14 };
-	if (!mainTileMap.load("Assets/Tile Sets/Main Tile Set.png", Vector2u(64, 64), gameMap))
+	mainTileMap = new TileMap;
+	if (!mainTileMap->load("Assets/Tile Sets/Main Tile Set.png", Vector2u(64, 64), gameMap))
 	{
-
+		cout << "[Error] Failed to load TileMap.";
 	}
 	//if (!currentTileSet.loadFromFile("Assets/Tilemaps/Temperate TileMap.png")) //The "Temperate TileMap" Sprite
 	//{
 	//	cout << "Error 1: Loading The Game Image(s) Failed. Make Sure ALL Images Are 8-bit-RGBA Images..." << "\n";
 	//	system("pause");
 	//}
-	MainPlayer.mapPosition = Vector2u(4, 5);
+	//MainPlayer->mapPosition = Vector2u(4, 5);
 	//MainPlayer.position[4][5] = true;
-    cout << "Game loaded\n";
+	MainPlayer = new PlayerCharacter(Vector2u(4, 5), gameMap);
+	MainPlayer->load("Assets/Sprite Sheets/Player Character Sprite Sheet.png", Vector2i(64, 64));
+	MainPlayer->traversableTerrain.push_back(13);
+	cout << "[Game Status] Game loaded\n";
 
 	while (theGameWindow.isOpen())
 	{
 		InputListener();
+		MainPlayer->update(1);
 		theGameWindow.clear();
-		theGameWindow.draw(mainTileMap);
+		theGameWindow.draw(*mainTileMap);
+		theGameWindow.draw(*MainPlayer);
 		theGameWindow.display();
 	}
+	cout << "[Game Status] Game closing down..." << endl;
+	delete mainTileMap;
+	mainTileMap = nullptr;
+	delete MainPlayer;
+	MainPlayer = nullptr;
 }
 
 /// <summary>
@@ -91,7 +106,7 @@ void InputListener()
 		{
 			if (event.key.code == sf::Keyboard::W)
 			{
-				MainPlayer.Move(gameMap, Vector2u(0, -1));
+				MainPlayer->move(gameMap, Vector2u(0, -1));
 				if (debuggingMap)
 				{
 					cout << "W Key Down" << endl;
@@ -100,7 +115,7 @@ void InputListener()
 			}
 			else if (event.key.code == sf::Keyboard::S)
 			{
-				MainPlayer.Move(gameMap, Vector2u(0, 1));
+				MainPlayer->move(gameMap, Vector2u(0, 1));
 				if (debuggingMap)
 				{
 					cout << "S Key Down" << endl;
@@ -109,7 +124,7 @@ void InputListener()
 			}
 			else if (event.key.code == sf::Keyboard::A)
 			{
-				MainPlayer.Move(gameMap, Vector2u(-1, 0));
+				MainPlayer->move(gameMap, Vector2u(-1, 0));
 				if (debuggingMap)
 				{
 					cout << "A Key Down" << endl;
@@ -118,7 +133,7 @@ void InputListener()
 			}
 			else if (event.key.code == sf::Keyboard::D)
 			{
-				MainPlayer.Move(gameMap, Vector2u(1, 0));
+				MainPlayer->move(gameMap, Vector2u(1, 0));
 				if (debuggingMap)
 				{
 					cout << "D Key Down" << endl;
@@ -142,11 +157,11 @@ void ConsoleMapOutput()
 	unsigned char i = -1, j = -1;
 
 	// Main ConsoleMapOutput()
-	cout << +gameMap[MainPlayer.mapPosition.y - 2][MainPlayer.mapPosition.x - 2] << +gameMap[MainPlayer.mapPosition.y - 2][MainPlayer.mapPosition.x - 1] << +gameMap[MainPlayer.mapPosition.y - 2][MainPlayer.mapPosition.x] << +gameMap[MainPlayer.mapPosition.y - 2][MainPlayer.mapPosition.x + 1] << +gameMap[MainPlayer.mapPosition.y - 2][MainPlayer.mapPosition.x + 2] << endl;
-	cout << +gameMap[MainPlayer.mapPosition.y - 1][MainPlayer.mapPosition.x - 2] << +gameMap[MainPlayer.mapPosition.y - 1][MainPlayer.mapPosition.x - 1] << +gameMap[MainPlayer.mapPosition.y - 1][MainPlayer.mapPosition.x] << +gameMap[MainPlayer.mapPosition.y - 1][MainPlayer.mapPosition.x + 1] << +gameMap[MainPlayer.mapPosition.y - 1][MainPlayer.mapPosition.x + 2] << endl;
-	cout << +gameMap[MainPlayer.mapPosition.y][MainPlayer.mapPosition.x - 2] << +gameMap[MainPlayer.mapPosition.y][MainPlayer.mapPosition.x - 1] << "C" << +gameMap[MainPlayer.mapPosition.y][MainPlayer.mapPosition.x + 1] << +gameMap[MainPlayer.mapPosition.y][MainPlayer.mapPosition.x + 2] << endl;
-	cout << +gameMap[MainPlayer.mapPosition.y + 1][MainPlayer.mapPosition.x - 2] << +gameMap[MainPlayer.mapPosition.y + 1][MainPlayer.mapPosition.x - 1] << +gameMap[MainPlayer.mapPosition.y + 1][MainPlayer.mapPosition.x] << +gameMap[MainPlayer.mapPosition.y + 1][MainPlayer.mapPosition.x + 1] << +gameMap[MainPlayer.mapPosition.y + 1][MainPlayer.mapPosition.x + 2] << endl;
-	cout << +gameMap[MainPlayer.mapPosition.y + 2][MainPlayer.mapPosition.x - 2] << +gameMap[MainPlayer.mapPosition.y + 2][MainPlayer.mapPosition.x - 1] << +gameMap[MainPlayer.mapPosition.y + 2][MainPlayer.mapPosition.x] << +gameMap[MainPlayer.mapPosition.y + 2][MainPlayer.mapPosition.x + 1] << +gameMap[MainPlayer.mapPosition.y + 2][MainPlayer.mapPosition.x + 2] << endl;
+	cout << +gameMap[MainPlayer->mapPosition.y - 2][MainPlayer->mapPosition.x - 2] << " | " << +gameMap[MainPlayer->mapPosition.y - 2][MainPlayer->mapPosition.x - 1] << " | " << +gameMap[MainPlayer->mapPosition.y - 2][MainPlayer->mapPosition.x] << " | " << +gameMap[MainPlayer->mapPosition.y - 2][MainPlayer->mapPosition.x + 1] << " | " << +gameMap[MainPlayer->mapPosition.y - 2][MainPlayer->mapPosition.x + 2] << endl;
+	cout << +gameMap[MainPlayer->mapPosition.y - 1][MainPlayer->mapPosition.x - 2] << " | " << +gameMap[MainPlayer->mapPosition.y - 1][MainPlayer->mapPosition.x - 1] << " | " << +gameMap[MainPlayer->mapPosition.y - 1][MainPlayer->mapPosition.x] << " | " << +gameMap[MainPlayer->mapPosition.y - 1][MainPlayer->mapPosition.x + 1] << " | " << +gameMap[MainPlayer->mapPosition.y - 1][MainPlayer->mapPosition.x + 2] << endl;
+	cout << +gameMap[MainPlayer->mapPosition.y][MainPlayer->mapPosition.x - 2] << " | " << +gameMap[MainPlayer->mapPosition.y][MainPlayer->mapPosition.x - 1] << " | " << "C" << " | " << +gameMap[MainPlayer->mapPosition.y][MainPlayer->mapPosition.x + 1] << " | " << +gameMap[MainPlayer->mapPosition.y][MainPlayer->mapPosition.x + 2] << " | " << endl;
+	cout << +gameMap[MainPlayer->mapPosition.y + 1][MainPlayer->mapPosition.x - 2] << " | " << +gameMap[MainPlayer->mapPosition.y + 1][MainPlayer->mapPosition.x - 1] << " | " << +gameMap[MainPlayer->mapPosition.y + 1][MainPlayer->mapPosition.x] << " | " << +gameMap[MainPlayer->mapPosition.y + 1][MainPlayer->mapPosition.x + 1] << " | " << +gameMap[MainPlayer->mapPosition.y + 1][MainPlayer->mapPosition.x + 2] << endl;
+	cout << +gameMap[MainPlayer->mapPosition.y + 2][MainPlayer->mapPosition.x - 2] << " | " << +gameMap[MainPlayer->mapPosition.y + 2][MainPlayer->mapPosition.x - 1] << " | " << +gameMap[MainPlayer->mapPosition.y + 2][MainPlayer->mapPosition.x] << " | " << +gameMap[MainPlayer->mapPosition.y + 2][MainPlayer->mapPosition.x + 1] << " | " << +gameMap[MainPlayer->mapPosition.y + 2][MainPlayer->mapPosition.x + 2] << endl;
 	cout << endl;
 }
 
