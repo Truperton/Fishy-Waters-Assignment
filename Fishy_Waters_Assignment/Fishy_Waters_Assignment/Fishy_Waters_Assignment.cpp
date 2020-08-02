@@ -26,7 +26,7 @@ TileMap *mainTileMap;
 
 // This variable stores a 128x128 tiles map
 array<array<unsigned char, 128>, 128> gameMap;
-Entity *MainPlayer;
+PlayerCharacter *MainPlayer;
 
 void InputListener();
 void ConsoleMapOutput();
@@ -76,6 +76,7 @@ int main()
 		InputListener();
 		MainPlayer->update(1);
 		theGameWindow.clear();
+		theGameWindow.setView(MainPlayer->playerView);
 		theGameWindow.draw(*mainTileMap);
 		theGameWindow.draw(*MainPlayer);
 		theGameWindow.display();

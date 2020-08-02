@@ -22,3 +22,15 @@ PlayerCharacter::~PlayerCharacter()
 	//cout << "The \"" << entityName << "\" is being destroyed" << endl;
 	cout << "[PlayerCharacter destructor] The \"" << entityName << "\" has been destroyed" << endl;
 }
+
+void PlayerCharacter::update(float inputProcessSpeed)
+{
+	// Local variables
+
+	// Main "update()"
+	Sprite::setPosition(64 * mapPosition.x, 64 * mapPosition.y);
+	playerView.setSize(960, 640);
+	playerView.setCenter(Sprite::getPosition().x + 32, Sprite::getPosition().y + 32);
+	cout << playerView.getSize().x << " " << playerView.getSize().y << endl;
+
+}

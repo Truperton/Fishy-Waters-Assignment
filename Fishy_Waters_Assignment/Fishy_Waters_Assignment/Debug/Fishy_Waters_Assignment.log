@@ -1,2 +1,7 @@
 ﻿  PlayerCharacter.cpp
+g:\repos\fishy-waters-assignment\fishy_waters_assignment\fishy_waters_assignment\playercharacter.cpp(31): warning C4244: 'argument': conversion from 'T' to 'float', possible loss of data
+          with
+          [
+              T=unsigned int
+          ]
   Fishy_Waters_Assignment.vcxproj -> G:\Repos\Fishy-Waters-Assignment\Fishy_Waters_Assignment\Debug\Fishy_Waters_Assignment.exe

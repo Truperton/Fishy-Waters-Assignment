@@ -39,7 +39,7 @@ Entity::~Entity()
 
 void Entity::update(float inputProcessSpeed)
 {
-	Sprite::setPosition(Sprite::getTextureRect().width * mapPosition.x, Sprite::getTextureRect().height * mapPosition.y);
+	Sprite::setPosition(64 * mapPosition.x, 64 * mapPosition.y);
 }
 
 bool Entity::load(const std::string inputSpriteSheetLoadLocation, sf::Vector2i inputSpriteSize)
