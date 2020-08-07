@@ -15,7 +15,7 @@ public:
 	// Constructors
 
 	PlayerCharacter(Vector2u inputPosition);
-	PlayerCharacter(Vector2u inputPosition, array<array<unsigned char, 128>, 128> &inputMapPointer);
+	PlayerCharacter(Vector2u inputPosition, array<array<unsigned char, 128>, 128> *inputMapPointer);
 
 	// Destructor
 

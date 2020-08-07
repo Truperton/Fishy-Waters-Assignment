@@ -17,7 +17,11 @@ class Entity : public Sprite
 {
 public:
 	// Public variables
-
+	/// <summary>
+	/// Set to true if you want the entity to output
+	/// debugging related messages in the console 
+	/// </summary>
+	bool debugging = false;
 	string entityName;
 	float travelSpeed;
 	vector<char> traversableTerrain;
@@ -49,7 +53,7 @@ public:
 	/// </summary>
 	/// <param name="inputName"> The individual name of the entity. </param>
 	/// <param name="inputPosition"> The position on the map that the entity is to spawn at. </param>
-	Entity(string inputName, Vector2u inputPosition, array<array<unsigned char, 128>, 128> &inputMapPointer);
+	Entity(string inputName, Vector2u inputPosition, array<array<unsigned char, 128>, 128> *inputMapPointer);
 
 	// Destructor
 
@@ -65,16 +69,16 @@ public:
 	/// This method moves the entity in the 2 dimensional
 	/// array depending on the input.
 	/// </summary>
-	void move(array<array<unsigned char, 128>, 128> inputMap, Vector2u inputMovement);
+	void move(Vector2u inputMovement);
 protected:
 	// Protected variables
-
-	array<array<unsigned char, 128>, 128> *localMap;
+	/// <summary> Stores the pointer to the game map in the main program. </summary>
+	array<array<unsigned char, 128>, 128> *localMapPointer;
 	// Protected methods
 
 private:
 	// Private variables
-
+	/// <summary> The variable that stores the texture of the entity internally. </summary>
 	Texture spriteTexture;
 	// Private methods
 

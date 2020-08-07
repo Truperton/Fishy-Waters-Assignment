@@ -10,19 +10,21 @@ TileMap::~TileMap()
 	cout << "[TileMap destructor] TileMap destroyed" << endl;
 }
 
-bool TileMap::load(const string inputTileSetLoadLocation, Vector2u inputTileSize, array<array<unsigned char, 128>, 128> inputMap)
+bool TileMap::load(const string inputTileSetLoadLocation, const string inputGameMapLocation, Vector2u inputTileSize, array<array<unsigned char, 128>, 128> *inputMap)
 {
 	// Local Variables
 	unsigned short int height, width;
 
 	// Main load()
+	localMapPointer = inputMap;
+	loadGameMap(inputGameMapLocation);
 	cout << "[TileMap loading] ";
 	if (!mapTileSet.loadFromFile(inputTileSetLoadLocation))
 	{
 		cout << "[Error] Failed to load TileMap: Couldn't find tile set under \"" << inputTileSetLoadLocation << "\"" << endl;
 		return false;
 	}
-	height = inputMap.size();
+	height = inputMap->size();
 	width = inputMap[0].size();
 	mapVertices.setPrimitiveType(sf::Quads);
 	mapVertices.resize(width * height * 4);
@@ -31,7 +33,7 @@ bool TileMap::load(const string inputTileSetLoadLocation, Vector2u inputTileSize
 		for (unsigned short int x = 0; x < width; x++)
 		{
 			// obtains the tile number
-			int tileNumber = inputMap[x][y];
+			int tileNumber = (*inputMap)[x][y];
 
 			// find its position in the tileset texture
 			int tu = tileNumber % (mapTileSet.getSize().x / inputTileSize.x);
@@ -55,6 +57,94 @@ bool TileMap::load(const string inputTileSetLoadLocation, Vector2u inputTileSize
 	}
 	cout << "TileMap loaded from \"" << inputTileSetLoadLocation << "\"" << endl;
 	return true;
+}
+
+bool TileMap::loadGameMap(const string inputGameMapLocation) 
+{
+	// Local variables
+	ifstream openedFile;
+	array<string, 128> stringArray;
+	string *stringToArray = new string;
+	string::size_type stringSizeType;
+	int counter, counterTwo, counterThree, maxSizeOne, maxSizeTwo, tempInt;
+
+	// Main "loadGameMap()"
+	cout << "[Loading Game Map]";
+	openedFile.open(inputGameMapLocation, ios::in);
+	if (openedFile.is_open())
+	{
+		cout << " Game map \"" << inputGameMapLocation << "\"\n";
+		counter = 0;
+		while (getline(openedFile, *stringToArray))
+		{
+			stringArray[counter] = *stringToArray;
+			counter++;
+		}
+		stringToArray = NULL;
+		openedFile.close();
+
+		stringToArray = new string;
+		counterThree = 0;
+		maxSizeOne = stringArray.size();
+		for (counter = 0; counter < maxSizeOne; counter++)
+		{
+			maxSizeTwo = stringArray[counter].size();
+			for (counterTwo = 0; counterTwo < maxSizeTwo + 1; counterTwo++)
+			{
+				if (stringArray[counter][counterTwo] != ',')
+				{
+					if (counterTwo >= maxSizeTwo)
+					{
+						tempInt = stoi(*stringToArray, &stringSizeType);
+						(*localMapPointer)[counter][counterThree] = tempInt;
+						stringToArray = NULL;
+						stringToArray = new string;
+					}
+					else
+					{
+						*stringToArray += stringArray[counter][counterTwo];
+					}
+				}
+				else
+				{
+					if (stringToArray->length() > 0)
+					{
+						tempInt = stoi(*stringToArray, &stringSizeType);
+						(*localMapPointer)[counter][counterThree] = tempInt;
+					}
+					else
+					{
+						(*localMapPointer)[counter][counterThree] = 255;
+					}
+					stringToArray = NULL;
+					stringToArray = new string;
+					counterThree++;
+				}
+			}
+			counterThree = 0;
+		}
+
+		//for (auto item : *localMapPointer)
+		//{
+		//	for (auto item2 : item)
+		//	{
+		//		cout << +item2 << " ";
+		//	}
+		//	cout << endl;
+		//}
+		//(*localMapPointer)[0] = integerArray[0];
+		return true;
+	}
+	else
+	{
+		cout << " Failed to find game map \"" << inputGameMapLocation << "\"\n";
+		return false;
+	}
+	delete stringToArray;
+	stringToArray = nullptr;
+	delete &stringArray;
+	counter, counterTwo, counterThree, maxSizeOne, maxSizeTwo, tempInt = NULL;
+
 }
 
 void TileMap::draw(sf::RenderTarget& target, sf::RenderStates states) const

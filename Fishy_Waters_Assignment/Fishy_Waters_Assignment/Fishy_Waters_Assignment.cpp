@@ -14,12 +14,13 @@ using namespace sf;
 // Global Variables
 // Debugging variables
 
-bool debuggingMap = true;
+bool debuggingMap = false;
 // Game window related variables
 
 sf::Vector2f theGameWindow_CurrentDimensions(960, 640);
 sf::Vector2f theGameWindow_PerspectiveDimensions(960, 640);
 sf::RenderWindow theGameWindow(sf::VideoMode(theGameWindow_CurrentDimensions.x, theGameWindow_CurrentDimensions.y), "Fishy Waters");
+
 // Tile Map variables
 
 TileMap *mainTileMap;
@@ -36,26 +37,26 @@ int main()
 	// Local Variables
 
 	// Main main()
-	//              0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25
-	gameMap[0]  = { 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14 };
-	gameMap[1]  = { 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14 };
-	gameMap[2]  = { 14, 14,  4,  8,  8,  8,  5,  4,  8,  8,  8,  8,  8,  5, 14, 14 };
-	gameMap[3]  = { 14, 14, 11, 13, 13, 13,  9, 11, 13, 13, 13, 13, 13,  9, 14, 14 };
-	gameMap[4]  = { 14, 14, 11, 13, 13, 13,  9, 11, 13, 13, 13, 13, 13,  9, 14, 14 };
-	gameMap[5]  = { 14, 14, 11, 13, 13,  0,  7, 11, 13, 13, 13, 13, 13,  9, 14, 14 };
-	gameMap[6]  = { 14, 14, 11, 13, 13,  2,  8,  3, 13, 13, 13, 13, 13,  9, 14, 14 };
-	gameMap[7]  = { 14, 14, 11, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13,  9, 14, 14 };
-	gameMap[8]  = { 14, 14, 11, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13,  9, 14, 14 };
-	gameMap[9]  = { 14, 14, 11, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13,  9, 14, 14 };
-	gameMap[10] = { 14, 14, 11, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13,  9, 14, 14 };
-	gameMap[11] = { 14, 14, 11, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13,  9, 14, 14 };
-	gameMap[12] = { 14, 14, 11, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13,  9, 14, 14 };
-	gameMap[13] = { 14, 14,  6, 14, 14, 14, 14, 13, 14, 14, 14, 14, 14, 14, 14, 14 };
-	gameMap[14] = { 14, 14, 14, 14, 14, 14, 14, 13, 14, 14, 14, 14, 14, 14, 14, 14 };
-	gameMap[15] = { 14, 14, 14, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 14 };
-	gameMap[16] = { 14, 14, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 14 };
+	//               0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  20  21  22  23  24  25
+	//gameMap[0]  = { 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14 };
+	//gameMap[1]  = { 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14 };
+	//gameMap[2]  = { 14, 14,  4,  8,  8,  8,  5,  4,  8,  8,  8,  8,  8,  5, 14, 14 };
+	//gameMap[3]  = { 14, 14, 11, 13, 13, 13,  9, 11, 13, 13, 13, 13, 13,  9, 14, 14 };
+	//gameMap[4]  = { 14, 14, 11, 13, 13, 13,  9, 11, 13, 13, 13, 13, 13,  9, 14, 14 };
+	//gameMap[5]  = { 14, 14, 11, 13, 13,  0,  7, 11, 13, 13, 13, 13, 13,  9, 14, 14 };
+	//gameMap[6]  = { 14, 14, 11, 13, 13,  2,  8,  3, 13, 13, 13, 13, 13,  9, 14, 14 };
+	//gameMap[7]  = { 14, 14, 11, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13,  9, 14, 14 };
+	//gameMap[8]  = { 14, 14, 11, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13,  9, 14, 14 };
+	//gameMap[9]  = { 14, 14, 11, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13,  9, 14, 14 };
+	//gameMap[10] = { 14, 14, 11, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13,  9, 14, 14 };
+	//gameMap[11] = { 14, 14, 11, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13,  9, 14, 14 };
+	//gameMap[12] = { 14, 14, 11, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13,  9, 14, 14 };
+	//gameMap[13] = { 14, 14,  6, 14, 14, 14, 14, 13, 14, 14, 14, 14, 14, 14, 14, 14 };
+	//gameMap[14] = { 14, 14, 14, 14, 14, 14, 14, 13, 14, 14, 14, 14, 14, 14, 14, 14 };
+	//gameMap[15] = { 14, 14, 14, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 14 };
+	//gameMap[16] = { 14, 14, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 14 };
 	mainTileMap = new TileMap;
-	if (!mainTileMap->load("Assets/Tile Sets/Main Tile Set.png", Vector2u(64, 64), gameMap))
+	if (!mainTileMap->load("Assets/Tile Sets/Main Tile Set.png", "Map 1.csv", Vector2u(64, 64), &gameMap))
 	{
 		cout << "[Error] Failed to load TileMap.";
 	}
@@ -66,7 +67,7 @@ int main()
 	//}
 	//MainPlayer->mapPosition = Vector2u(4, 5);
 	//MainPlayer.position[4][5] = true;
-	MainPlayer = new PlayerCharacter(Vector2u(4, 5), gameMap);
+	MainPlayer = new PlayerCharacter(Vector2u(4, 5), &gameMap);
 	MainPlayer->load("Assets/Sprite Sheets/Player Character Sprite Sheet.png", Vector2i(64, 64));
 	MainPlayer->traversableTerrain.push_back(13);
 	cout << "[Game Status] Game loaded\n";
@@ -107,7 +108,7 @@ void InputListener()
 		{
 			if (event.key.code == sf::Keyboard::W)
 			{
-				MainPlayer->move(gameMap, Vector2u(0, -1));
+				MainPlayer->move(Vector2u(0, -1));
 				if (debuggingMap)
 				{
 					cout << "W Key Down" << endl;
@@ -116,7 +117,7 @@ void InputListener()
 			}
 			else if (event.key.code == sf::Keyboard::S)
 			{
-				MainPlayer->move(gameMap, Vector2u(0, 1));
+				MainPlayer->move(Vector2u(0, 1));
 				if (debuggingMap)
 				{
 					cout << "S Key Down" << endl;
@@ -125,7 +126,7 @@ void InputListener()
 			}
 			else if (event.key.code == sf::Keyboard::A)
 			{
-				MainPlayer->move(gameMap, Vector2u(-1, 0));
+				MainPlayer->move(Vector2u(-1, 0));
 				if (debuggingMap)
 				{
 					cout << "A Key Down" << endl;
@@ -134,7 +135,7 @@ void InputListener()
 			}
 			else if (event.key.code == sf::Keyboard::D)
 			{
-				MainPlayer->move(gameMap, Vector2u(1, 0));
+				MainPlayer->move(Vector2u(1, 0));
 				if (debuggingMap)
 				{
 					cout << "D Key Down" << endl;
