@@ -35,47 +35,31 @@ void ConsoleMapOutput();
 int main()
 {
 	// Local Variables
+	Clock delta;
+	Clock sessionTime;
+	Time elapsedTime;
 
 	// Main main()
-	//               0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  20  21  22  23  24  25
-	//gameMap[0]  = { 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14 };
-	//gameMap[1]  = { 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14 };
-	//gameMap[2]  = { 14, 14,  4,  8,  8,  8,  5,  4,  8,  8,  8,  8,  8,  5, 14, 14 };
-	//gameMap[3]  = { 14, 14, 11, 13, 13, 13,  9, 11, 13, 13, 13, 13, 13,  9, 14, 14 };
-	//gameMap[4]  = { 14, 14, 11, 13, 13, 13,  9, 11, 13, 13, 13, 13, 13,  9, 14, 14 };
-	//gameMap[5]  = { 14, 14, 11, 13, 13,  0,  7, 11, 13, 13, 13, 13, 13,  9, 14, 14 };
-	//gameMap[6]  = { 14, 14, 11, 13, 13,  2,  8,  3, 13, 13, 13, 13, 13,  9, 14, 14 };
-	//gameMap[7]  = { 14, 14, 11, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13,  9, 14, 14 };
-	//gameMap[8]  = { 14, 14, 11, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13,  9, 14, 14 };
-	//gameMap[9]  = { 14, 14, 11, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13,  9, 14, 14 };
-	//gameMap[10] = { 14, 14, 11, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13,  9, 14, 14 };
-	//gameMap[11] = { 14, 14, 11, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13,  9, 14, 14 };
-	//gameMap[12] = { 14, 14, 11, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13,  9, 14, 14 };
-	//gameMap[13] = { 14, 14,  6, 14, 14, 14, 14, 13, 14, 14, 14, 14, 14, 14, 14, 14 };
-	//gameMap[14] = { 14, 14, 14, 14, 14, 14, 14, 13, 14, 14, 14, 14, 14, 14, 14, 14 };
-	//gameMap[15] = { 14, 14, 14, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 14 };
-	//gameMap[16] = { 14, 14, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 14 };
+	theGameWindow.setFramerateLimit(60);
 	mainTileMap = new TileMap;
 	if (!mainTileMap->load("Assets/Tile Sets/Main Tile Set.png", "Map 1.csv", Vector2u(64, 64), &gameMap))
 	{
 		cout << "[Error] Failed to load TileMap.";
 	}
-	//if (!currentTileSet.loadFromFile("Assets/Tilemaps/Temperate TileMap.png")) //The "Temperate TileMap" Sprite
-	//{
-	//	cout << "Error 1: Loading The Game Image(s) Failed. Make Sure ALL Images Are 8-bit-RGBA Images..." << "\n";
-	//	system("pause");
-	//}
-	//MainPlayer->mapPosition = Vector2u(4, 5);
-	//MainPlayer.position[4][5] = true;
-	MainPlayer = new PlayerCharacter(Vector2u(4, 5), &gameMap);
+	MainPlayer = new PlayerCharacter(Vector2u(4, 5), &gameMap, 150.0f);
 	MainPlayer->load("Assets/Sprite Sheets/Player Character Sprite Sheet.png", Vector2i(64, 64));
 	MainPlayer->traversableTerrain.push_back(13);
-	cout << "[Game Status] Game loaded\n";
-
+	elapsedTime = delta.getElapsedTime();
+	cout << "[Game Status] Game loaded in " << elapsedTime.asSeconds() << " seconds.";
+	sessionTime.restart();
 	while (theGameWindow.isOpen())
 	{
 		InputListener();
-		MainPlayer->update(1);
+		elapsedTime = delta.restart();
+		//cout << elapsedTime.asSeconds() << " " << elapsedTime.asMilliseconds() << " " << elapsedTime.asMicroseconds() << endl;
+		MainPlayer->update(elapsedTime);
+
+		// Following section handles drawing on the game window.
 		theGameWindow.clear();
 		theGameWindow.setView(MainPlayer->playerView);
 		theGameWindow.draw(*mainTileMap);
@@ -96,6 +80,8 @@ void InputListener()
 {
 	// Local Variables
 	sf::Event event;
+	bool w = false, a = false, s = false, d = false;
+	Vector2u direction;
 
 	// Main "InputListener()"
 	while (theGameWindow.pollEvent(event))
@@ -104,50 +90,131 @@ void InputListener()
 		{
 			theGameWindow.close();
 		}
-		else if (event.type == sf::Event::KeyPressed)
+		if (event.type == sf::Event::KeyPressed)
 		{
 			if (event.key.code == sf::Keyboard::W)
 			{
-				MainPlayer->move(Vector2u(0, -1));
-				if (debuggingMap)
+				//MainPlayer->move(Vector2u(0, -1));
+				w = true;
+				if (MainPlayer->debugging)
 				{
 					cout << "W Key Down" << endl;
+				}
+				if (debuggingMap)
+				{
 					ConsoleMapOutput();
 				}
 			}
-			else if (event.key.code == sf::Keyboard::S)
+			if (event.key.code == sf::Keyboard::S)
 			{
-				MainPlayer->move(Vector2u(0, 1));
-				if (debuggingMap)
+				s = true;
+				//MainPlayer->move(Vector2u(0, 1));
+				if (MainPlayer->debugging)
 				{
 					cout << "S Key Down" << endl;
+				}
+				if (debuggingMap)
+				{
 					ConsoleMapOutput();
 				}
 			}
-			else if (event.key.code == sf::Keyboard::A)
+			if (event.key.code == sf::Keyboard::A)
 			{
-				MainPlayer->move(Vector2u(-1, 0));
-				if (debuggingMap)
+				a = true;
+				//MainPlayer->move(Vector2u(-1, 0));
+				if (MainPlayer->debugging)
 				{
 					cout << "A Key Down" << endl;
-					ConsoleMapOutput();
 				}
-			}
-			else if (event.key.code == sf::Keyboard::D)
-			{
-				MainPlayer->move(Vector2u(1, 0));
 				if (debuggingMap)
 				{
+					ConsoleMapOutput();
+				}
+			}
+			if (event.key.code == sf::Keyboard::D)
+			{
+				d = true;
+				//MainPlayer->move(Vector2u(1, 0));
+				if (MainPlayer->debugging)
+				{
 					cout << "D Key Down" << endl;
+				}
+				if (debuggingMap)
+				{
 					ConsoleMapOutput();
 				}
 			}
 		}
-		else if (event.type == sf::Event::KeyReleased)
+		if (event.type == sf::Event::KeyReleased)
 		{
-
+			if (event.key.code == sf::Keyboard::W)
+			{
+				w = false;
+				if (MainPlayer->debugging)
+				{
+					cout << "[Key event] W key released" << endl;
+				}
+				if (debuggingMap)
+				{
+					ConsoleMapOutput();
+				}
+			}
+			if (event.key.code == sf::Keyboard::S)
+			{
+				s = false;
+				if (MainPlayer->debugging)
+				{
+					cout << "[Key event] S key released" << endl;
+				}
+				if (debuggingMap)
+				{
+					ConsoleMapOutput();
+				}
+			}
+			if (event.key.code == sf::Keyboard::A)
+			{
+				a = false;
+				if (MainPlayer->debugging)
+				{
+					cout << "[Key event] A key released" << endl;
+				}
+				if (debuggingMap)
+				{
+					ConsoleMapOutput();
+				}
+			}
+			if (event.key.code == sf::Keyboard::D)
+			{
+				d = false;
+				if (MainPlayer->debugging)
+				{
+					cout << "[Key event] D key released" << endl;
+				}
+				if (debuggingMap)
+				{
+					ConsoleMapOutput();
+				}
+			}
 		}
+
 	}
+	if (w)
+	{
+		direction += Vector2u(0, -1);
+	}
+	if (s)
+	{
+		direction += Vector2u(0, 1);
+	}
+	if (a)
+	{
+		direction += Vector2u(-1, 0);
+	}
+	if (d)
+	{
+		direction += Vector2u(1, 0);
+	}
+	MainPlayer->move(direction);
 }
 
 /// <summary>

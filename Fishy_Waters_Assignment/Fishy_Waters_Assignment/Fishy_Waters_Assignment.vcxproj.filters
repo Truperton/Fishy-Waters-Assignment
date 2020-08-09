@@ -13,30 +13,48 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Header Files\Game World Entities">
+      <UniqueIdentifier>{e87b2ec4-5071-4418-9bbe-931bb3c4143d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Game World Entities">
+      <UniqueIdentifier>{77952683-5993-4989-99d1-419aff782646}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Fishy_Waters_Assignment.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Entity.cpp">
-      <Filter>Resource Files</Filter>
-    </ClCompile>
     <ClCompile Include="TileMap.cpp">
       <Filter>Resource Files</Filter>
     </ClCompile>
+    <ClCompile Include="CapturableCritter.cpp">
+      <Filter>Resource Files\Game World Entities</Filter>
+    </ClCompile>
     <ClCompile Include="PlayerCharacter.cpp">
-      <Filter>Resource Files</Filter>
+      <Filter>Resource Files\Game World Entities</Filter>
+    </ClCompile>
+    <ClCompile Include="Entity.cpp">
+      <Filter>Resource Files\Game World Entities</Filter>
+    </ClCompile>
+    <ClCompile Include="BrownHog.cpp">
+      <Filter>Resource Files\Game World Entities</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Entity.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="TileMap.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="CapturableCritter.h">
+      <Filter>Header Files\Game World Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="Entity.h">
+      <Filter>Header Files\Game World Entities</Filter>
+    </ClInclude>
     <ClInclude Include="PlayerCharacter.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Game World Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="BrownHog.h">
+      <Filter>Header Files\Game World Entities</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -15,14 +15,14 @@ public:
 	// Constructors
 
 	PlayerCharacter(Vector2u inputPosition);
-	PlayerCharacter(Vector2u inputPosition, array<array<unsigned char, 128>, 128> *inputMapPointer);
+	PlayerCharacter(Vector2u inputPosition, array<array<unsigned char, 128>, 128> *inputMapPointer, float inputTravelSpeed);
 
 	// Destructor
 
 	~PlayerCharacter();
 
 	// public methods
-	void update(float inputProcessSpeed);
+	void update(Time inputProcessSpeed);
 
 private:
 	// Private variables
