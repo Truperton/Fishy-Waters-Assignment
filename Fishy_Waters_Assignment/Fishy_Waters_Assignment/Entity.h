@@ -21,20 +21,23 @@ public:
 	/// Set to true if you want the entity to output
 	/// debugging related messages in the console 
 	/// </summary>
-	bool debugging = false;
+	bool debugging = true;
 	string entityName;
 	float travelSpeed;
 	vector<char> traversableTerrain;
 	Vector2u mapPosition;
-	// Default states:
-	// 0 - Idle
-	// 1 - Walk
+	/// <summary>
+	/// Default states:
+	/// 0 - Idle
+	/// 1 - Walk
+	/// </summary>
 	unsigned char animationState;
 	unsigned char animationFrame;
 
 	// Constructors
 
 	Entity();
+
 	/// <summary>
 	/// Constructs a new entity with a name.
 	/// </summary>
@@ -61,8 +64,14 @@ public:
 
 	// Public methods
 
-	virtual void update(float inputProcessSpeed);
+	virtual void update(Time inputProcessSpeed);
 
+	/// <summary>
+	/// This method loads the sprite sheet for the player
+	/// character from the provided location.
+	/// </summary>
+	/// <param name="inputSpriteSheetLoadLocation"> The path to the sprite sheet file. </param>
+	/// <param name="inputSpriteSize"> Size of the sprite in pixels. </param>
 	bool load(const string inputSpriteSheetLoadLocation, Vector2i inputSpriteSize);
 
 	/// <summary>
@@ -74,8 +83,10 @@ protected:
 	// Protected variables
 	/// <summary> Stores the pointer to the game map in the main program. </summary>
 	array<array<unsigned char, 128>, 128> *localMapPointer;
+	bool moving;
 	// Protected methods
 
+	void travel(Time inputProcessSpeed);
 private:
 	// Private variables
 	/// <summary> The variable that stores the texture of the entity internally. </summary>

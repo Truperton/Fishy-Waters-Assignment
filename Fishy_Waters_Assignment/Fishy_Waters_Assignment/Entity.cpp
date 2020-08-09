@@ -33,13 +33,19 @@ Entity::Entity(string inputName, Vector2u inputPosition, array<array<unsigned ch
 
 Entity::~Entity()
 {
+	// Local variables
+
+	// Main "~Entity()"
 	cout << "The \"" << entityName << "\" is being destroyed" << endl;
 	localMapPointer = nullptr;
 	cout << "[Entity destructor] The \"" << entityName << "\" has been destroyed" << endl;
 }
 
-void Entity::update(float inputProcessSpeed)
+void Entity::update(Time inputProcessSpeed)
 {
+	// Local variables
+
+	// Main "update()"
 	Sprite::setPosition(64 * mapPosition.x, 64 * mapPosition.y);
 }
 
@@ -63,20 +69,79 @@ bool Entity::load(const std::string inputSpriteSheetLoadLocation, sf::Vector2i i
 void Entity::move(Vector2u inputMovement)
 {
 	// Local variables
-	
+	/// <summary> If the variable still ends as true it outputs that the object collided. </summary>
 	bool moveCollision = true;
 	// Main "move()"
-	for (auto item : traversableTerrain)
+	if (!moving)
 	{
-		if ((*localMapPointer)[mapPosition.y + inputMovement.y][mapPosition.x + inputMovement.x] == item)
+		for (auto item : traversableTerrain)
 		{
-			mapPosition += inputMovement;
-			moveCollision = false;
+			if ((*localMapPointer)[mapPosition.y + inputMovement.y][mapPosition.x + inputMovement.x] == item)
+			{
+				mapPosition += inputMovement;
+				moveCollision = false;
+			}
+		}
+		if (moveCollision)
+		{
+			cout << "[Entity event] Entity \"" << entityName << "\": Collision\n";
 		}
 	}
-	if (moveCollision)
+	else
 	{
-		cout << "[Entity event] Entity \"" << entityName << "\": Collision\n";
+		cout << "[Entity event] Entity \"" << entityName << "\" still moving\n";
 	}
 	return;
+}
+
+void Entity::travel(Time inputProcessSpeed)
+{
+	// Local variables
+	Vector2f destination;
+	Vector2f step;
+	// Main "travel()"
+	destination = Vector2f(mapPosition.x * 64, mapPosition.y * 64);
+	if (destination != Sprite::getPosition())
+	{
+		moving = true;
+		if (destination.x - Sprite::getPosition().x > 1.0f)
+		{
+			step.x = travelSpeed * inputProcessSpeed.asSeconds();
+			step.y = 0;
+		}
+		else if (destination.x - Sprite::getPosition().x < -1.0f)
+		{
+			step.x = travelSpeed * -inputProcessSpeed.asSeconds();
+			step.y = 0;
+		}
+		else
+		{
+			step.x = 0;
+		}
+
+		if (destination.y - Sprite::getPosition().y > 1.0f)
+		{
+			step.y = travelSpeed * inputProcessSpeed.asSeconds();
+		}
+		else if (destination.y - Sprite::getPosition().y < -1.0f)
+		{
+			step.y = travelSpeed * -inputProcessSpeed.asSeconds();
+		}
+		else
+		{
+			step.y = 0;
+		}
+
+		if (step == Vector2f(0,0))
+		{
+			Sprite::setPosition(destination);
+			moving = false;
+		}
+		Sprite::move(step);
+	}
+	else
+	{
+		moving = false;
+	}
+
 }
