@@ -1,7 +1,29 @@
-﻿  Fishy_Waters_Assignment.cpp
-c:\users\trupe\source\repos\truperton\fishy-waters-assignment\fishy_waters_assignment\fishy_waters_assignment\fishy_waters_assignment.cpp(22): warning C4244: 'argument': conversion from 'T' to 'unsigned int', possible loss of data
+﻿  CapturableCritter.cpp
+c:\users\trupe\source\repos\truperton\fishy-waters-assignment\fishy_waters_assignment\fishy_waters_assignment\capturablecritter.cpp(15): warning C4244: 'argument': conversion from 'T' to 'float', possible loss of data
           with
+          [
+              T=unsigned int
+          ]
+  Entity.cpp
+c:\users\trupe\source\repos\truperton\fishy-waters-assignment\fishy_waters_assignment\fishy_waters_assignment\entity.cpp(49): warning C4244: 'argument': conversion from 'T' to 'float', possible loss of data
+          with
+          [
+              T=unsigned int
+          ]
+c:\users\trupe\source\repos\truperton\fishy-waters-assignment\fishy_waters_assignment\fishy_waters_assignment\entity.cpp(138): warning C4244: 'argument': conversion from 'T' to 'T', possible loss of data
+          with
+          [
+              T=unsigned int
+          ]
+          and
           [
               T=float
           ]
+  PlayerCharacter.cpp
+c:\users\trupe\source\repos\truperton\fishy-waters-assignment\fishy_waters_assignment\fishy_waters_assignment\playercharacter.cpp(25): warning C4244: 'argument': conversion from 'T' to 'float', possible loss of data
+          with
+          [
+              T=unsigned int
+          ]
+  Generating Code...
   Fishy_Waters_Assignment.vcxproj -> C:\Users\trupe\Source\Repos\Truperton\Fishy-Waters-Assignment\Fishy_Waters_Assignment\Debug\Fishy_Waters_Assignment.exe

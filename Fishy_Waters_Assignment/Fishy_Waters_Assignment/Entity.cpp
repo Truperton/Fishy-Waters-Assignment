@@ -84,14 +84,49 @@ void Entity::move(Vector2u inputMovement)
 		}
 		if (moveCollision)
 		{
-			cout << "[Entity event] Entity \"" << entityName << "\": Collision\n";
+			if (debugging)
+			{
+				cout << "[Entity event] Entity \"" << entityName << "\": Collision\n";
+			}
 		}
 	}
 	else
 	{
-		cout << "[Entity event] Entity \"" << entityName << "\" still moving\n";
+		if (debugging)
+		{
+			cout << "[Entity event] Entity \"" << entityName << "\" still moving\n";
+		}
 	}
 	return;
+}
+
+void Entity::animator()
+{
+	// Local variables
+
+	// Main "travel()"
+	if (moving)
+	{
+		animationState = 1;
+	}
+	else if (!moving)
+	{
+		animationState = 0;
+	}
+	if (animationInterval > 0.4f)
+	{
+		if (animationFrame < 3)
+		{
+			animationFrame++;
+		}
+		else
+		{
+			animationFrame = 0;
+		}
+		animationInterval = 0.0f;
+		//cout << +animationState << " " << +animationFrame << endl;
+	}
+	Sprite::setTextureRect(sf::IntRect(Vector2i(animationFrame * 64, animationState* 64), Vector2i(64,64)));
 }
 
 void Entity::travel(Time inputProcessSpeed)

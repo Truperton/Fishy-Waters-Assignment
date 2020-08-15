@@ -46,6 +46,8 @@ void PlayerCharacter::update(Time inputProcessSpeed)
 
 	// Main "update()"
 	//Sprite::setPosition(64 * mapPosition.x, 64 * mapPosition.y);
+	animationInterval += inputProcessSpeed.asSeconds();
+	animator();
 	travel(inputProcessSpeed);
 	playerView.setSize(960, 640);
 	playerView.setCenter(Sprite::getPosition().x + 32, Sprite::getPosition().y + 32);

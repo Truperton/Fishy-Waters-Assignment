@@ -33,6 +33,7 @@ public:
 	/// </summary>
 	unsigned char animationState;
 	unsigned char animationFrame;
+	float animationInterval;
 
 	// Constructors
 
@@ -61,7 +62,6 @@ public:
 	// Destructor
 
 	~Entity();
-
 	// Public methods
 
 	virtual void update(Time inputProcessSpeed);
@@ -86,6 +86,7 @@ protected:
 	bool moving;
 	// Protected methods
 
+	void animator();
 	void travel(Time inputProcessSpeed);
 private:
 	// Private variables

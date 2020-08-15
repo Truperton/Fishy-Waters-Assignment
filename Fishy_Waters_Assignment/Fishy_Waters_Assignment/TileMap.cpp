@@ -33,26 +33,26 @@ bool TileMap::load(const string inputTileSetLoadLocation, const string inputGame
 		for (unsigned short int x = 0; x < width; x++)
 		{
 			// obtains the tile number
-			int tileNumber = (*inputMap)[x][y];
+			int tileNumber = (*inputMap)[y][x];
 
 			// find its position in the tileset texture
-			int tu = tileNumber % (mapTileSet.getSize().x / inputTileSize.x);
-			int tv = tileNumber / (mapTileSet.getSize().x / inputTileSize.x);
+			int tileX = tileNumber % (mapTileSet.getSize().x / inputTileSize.x);
+			int tileY = tileNumber / (mapTileSet.getSize().x / inputTileSize.x);
 
-			// get a pointer to the current tile's quad
+			// Retrieve the pointer for the current tile's quad
 			sf::Vertex* quad = &mapVertices[(y + x * width) * 4];
 
-			// define its 4 corners
-			quad[0].position = sf::Vector2f(y * inputTileSize.x, x * inputTileSize.y);
-			quad[1].position = sf::Vector2f((y + 1) * inputTileSize.x, x * inputTileSize.y);
-			quad[2].position = sf::Vector2f((y + 1) * inputTileSize.x, (x + 1) * inputTileSize.y);
-			quad[3].position = sf::Vector2f(y * inputTileSize.x, (x + 1) * inputTileSize.y);
+			// define the quad's 4 corners
+			quad[0].position = sf::Vector2f(x * inputTileSize.x, y * inputTileSize.y);
+			quad[1].position = sf::Vector2f((x + 1) * inputTileSize.x, y * inputTileSize.y);
+			quad[2].position = sf::Vector2f((x + 1) * inputTileSize.x, (y + 1) * inputTileSize.y);
+			quad[3].position = sf::Vector2f(x * inputTileSize.x, (y + 1) * inputTileSize.y);
 
-			// define its 4 texture coordinates
-			quad[0].texCoords = sf::Vector2f(tu * inputTileSize.x, tv * inputTileSize.y);
-			quad[1].texCoords = sf::Vector2f((tu + 1) * inputTileSize.x, tv * inputTileSize.y);
-			quad[2].texCoords = sf::Vector2f((tu + 1) * inputTileSize.x, (tv + 1) * inputTileSize.y);
-			quad[3].texCoords = sf::Vector2f(tu * inputTileSize.x, (tv + 1) * inputTileSize.y);
+			// define the quad's coordinates in the texture
+			quad[0].texCoords = sf::Vector2f(tileX * inputTileSize.x, tileY * inputTileSize.y);
+			quad[1].texCoords = sf::Vector2f((tileX + 1) * inputTileSize.x, tileY * inputTileSize.y);
+			quad[2].texCoords = sf::Vector2f((tileX + 1) * inputTileSize.x, (tileY + 1) * inputTileSize.y);
+			quad[3].texCoords = sf::Vector2f(tileX * inputTileSize.x, (tileY + 1) * inputTileSize.y);
 		}
 	}
 	cout << "TileMap loaded from \"" << inputTileSetLoadLocation << "\"" << endl;
@@ -124,15 +124,6 @@ bool TileMap::loadGameMap(const string inputGameMapLocation)
 			counterThree = 0;
 		}
 
-		//for (auto item : *localMapPointer)
-		//{
-		//	for (auto item2 : item)
-		//	{
-		//		cout << +item2 << " ";
-		//	}
-		//	cout << endl;
-		//}
-		//(*localMapPointer)[0] = integerArray[0];
 		return true;
 	}
 	else

@@ -2,11 +2,14 @@
 //
 
 #include <iostream>
+#include <thread>
 #include <array>
 #include <vector>
+#include <random>
 #include <SFML/Graphics.hpp>
-#include "Entity.h"
 #include "PlayerCharacter.h"
+#include "CapturableCritter.h"
+#include "BrownHog.h"
 #include "TileMap.h"
 
 using namespace std;
@@ -28,6 +31,11 @@ TileMap *mainTileMap;
 // This variable stores a 128x128 tiles map
 array<array<unsigned char, 128>, 128> gameMap;
 PlayerCharacter *MainPlayer;
+vector<CapturableCritter*> critters;
+vector<std::thread> critterThreads;
+
+std::mt19937 numberGenerator;
+
 
 void InputListener();
 void ConsoleMapOutput();
@@ -46,9 +54,13 @@ int main()
 	{
 		cout << "[Error] Failed to load TileMap.";
 	}
-	MainPlayer = new PlayerCharacter(Vector2u(4, 5), &gameMap, 150.0f);
+	MainPlayer = new PlayerCharacter(Vector2u(4, 5), &gameMap, 100.0f);
 	MainPlayer->load("Assets/Sprite Sheets/Player Character Sprite Sheet.png", Vector2i(64, 64));
 	MainPlayer->traversableTerrain.push_back(13);
+	critters.push_back(new BrownHog(to_string(1), Vector2u(7,7), &gameMap, 1));
+	critters[0]->load("Assets/Sprite Sheets/Brown Hog Sprite Sheet.png", Vector2i(64, 64));
+	critters.push_back(new BrownHog(to_string(2), Vector2u(10, 10), &gameMap, 1));
+	critters[1]->load("Assets/Sprite Sheets/Brown Hog Sprite Sheet.png", Vector2i(64, 64));
 	elapsedTime = delta.getElapsedTime();
 	cout << "[Game Status] Game loaded in " << elapsedTime.asSeconds() << " seconds.";
 	sessionTime.restart();
@@ -58,19 +70,62 @@ int main()
 		elapsedTime = delta.restart();
 		//cout << elapsedTime.asSeconds() << " " << elapsedTime.asMilliseconds() << " " << elapsedTime.asMicroseconds() << endl;
 		MainPlayer->update(elapsedTime);
+		for (auto item : critters)
+		{
+			std::uniform_int_distribution<int> directionDistribution(0, 3);
+			std::uniform_real_distribution<float> intervalDistribution(item->intervalMinimum, item->intervalMaximum);
+			critterThreads.push_back(thread(&CapturableCritter::update, item, elapsedTime, directionDistribution(numberGenerator), intervalDistribution(numberGenerator)));
+		}
+		for (int i = 0; i < critterThreads.size(); i++)
+		{
+			critterThreads[i].join();
+			if (i == critterThreads.size() - 1)
+			{
+				critterThreads.clear();
+			}
+		}
+		for (int i = critters.size() - 1; i >= 0; i--)
+		{
+			if (critters[i]->lifespanCurrent > 30.0f)
+			{
+				cout << "first " << critters.size() << endl;
+				delete critters[i];
+				critters[i] = nullptr;
+				critters.erase(critters.begin() + i);
+				critters.shrink_to_fit();
+				cout << "second " << critters.size() << endl;
+			}
+		}
 
 		// Following section handles drawing on the game window.
 		theGameWindow.clear();
 		theGameWindow.setView(MainPlayer->playerView);
 		theGameWindow.draw(*mainTileMap);
 		theGameWindow.draw(*MainPlayer);
+		if (critters.size() > 0)
+		{
+			for (auto item : critters)
+			{
+				theGameWindow.draw(*item);
+			}
+		}
 		theGameWindow.display();
 	}
 	cout << "[Game Status] Game closing down..." << endl;
+	for (auto item : critters)
+	{
+		delete item;
+		item = nullptr;
+	}
+	cout << critters.size();
+	critters.clear();
+	cout << critters.size();
 	delete mainTileMap;
 	mainTileMap = nullptr;
 	delete MainPlayer;
 	MainPlayer = nullptr;
+
+	return 1;
 }
 
 /// <summary>
