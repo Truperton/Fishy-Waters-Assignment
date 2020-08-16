@@ -107,10 +107,18 @@ void Entity::animator()
 	// Main "travel()"
 	if (moving)
 	{
+		if (animationState != 1)
+		{
+			animationFrame = 0;
+		}
 		animationState = 1;
 	}
 	else if (!moving)
 	{
+		if (animationState != 0)
+		{
+			animationFrame = 0;
+		}
 		animationState = 0;
 	}
 	if (animationInterval > 0.4f)
@@ -139,12 +147,16 @@ void Entity::travel(Time inputProcessSpeed)
 	if (destination != Sprite::getPosition())
 	{
 		moving = true;
-		if (destination.x - Sprite::getPosition().x > 1.0f)
+		if (debugging)
+		{
+			cout << entityName << " moving set to true\n";
+		}
+		if (destination.x - Sprite::getPosition().x > travelSpeed / 15)
 		{
 			step.x = travelSpeed * inputProcessSpeed.asSeconds();
 			step.y = 0;
 		}
-		else if (destination.x - Sprite::getPosition().x < -1.0f)
+		else if (destination.x - Sprite::getPosition().x < -travelSpeed / 15)
 		{
 			step.x = travelSpeed * -inputProcessSpeed.asSeconds();
 			step.y = 0;
@@ -154,11 +166,11 @@ void Entity::travel(Time inputProcessSpeed)
 			step.x = 0;
 		}
 
-		if (destination.y - Sprite::getPosition().y > 1.0f)
+		if (destination.y - Sprite::getPosition().y > travelSpeed / 15)
 		{
 			step.y = travelSpeed * inputProcessSpeed.asSeconds();
 		}
-		else if (destination.y - Sprite::getPosition().y < -1.0f)
+		else if (destination.y - Sprite::getPosition().y < -travelSpeed / 15)
 		{
 			step.y = travelSpeed * -inputProcessSpeed.asSeconds();
 		}
@@ -167,16 +179,24 @@ void Entity::travel(Time inputProcessSpeed)
 			step.y = 0;
 		}
 
-		if (step == Vector2f(0,0))
+		if (step == Vector2f(0, 0))
 		{
 			Sprite::setPosition(destination);
-			moving = false;
+			//moving = false;
+			//if (debugging)
+			//{
+			//	cout << entityName << " moving set to false after being set to true\n";
+			//}
 		}
 		Sprite::move(step);
 	}
 	else
 	{
 		moving = false;
+		if (debugging)
+		{
+			cout << entityName << " moving set to false\n";
+		}
 	}
 
 }

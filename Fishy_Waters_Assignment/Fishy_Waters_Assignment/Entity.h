@@ -21,7 +21,7 @@ public:
 	/// Set to true if you want the entity to output
 	/// debugging related messages in the console 
 	/// </summary>
-	bool debugging = true;
+	bool debugging = false;
 	string entityName;
 	float travelSpeed;
 	vector<char> traversableTerrain;

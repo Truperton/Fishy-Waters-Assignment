@@ -54,7 +54,7 @@ int main()
 	{
 		cout << "[Error] Failed to load TileMap.";
 	}
-	MainPlayer = new PlayerCharacter(Vector2u(4, 5), &gameMap, 100.0f);
+	MainPlayer = new PlayerCharacter(Vector2u(4, 5), &gameMap, 150.0f);
 	MainPlayer->load("Assets/Sprite Sheets/Player Character Sprite Sheet.png", Vector2i(64, 64));
 	MainPlayer->traversableTerrain.push_back(13);
 	critters.push_back(new BrownHog(to_string(1), Vector2u(7,7), &gameMap, 1));
@@ -66,10 +66,13 @@ int main()
 	sessionTime.restart();
 	while (theGameWindow.isOpen())
 	{
-		InputListener();
+		cout << sessionTime.getElapsedTime().asSeconds() << endl;
 		elapsedTime = delta.restart();
-		//cout << elapsedTime.asSeconds() << " " << elapsedTime.asMilliseconds() << " " << elapsedTime.asMicroseconds() << endl;
 		MainPlayer->update(elapsedTime);
+		InputListener();
+
+		//cout << elapsedTime.asSeconds() << " " << elapsedTime.asMilliseconds() << " " << elapsedTime.asMicroseconds() << endl;
+
 		for (auto item : critters)
 		{
 			std::uniform_int_distribution<int> directionDistribution(0, 3);
