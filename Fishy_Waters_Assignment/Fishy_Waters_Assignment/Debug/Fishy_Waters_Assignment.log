@@ -1,7 +1,107 @@
-﻿  Fishy_Waters_Assignment.cpp
+﻿  BrownHog.cpp
+  CapturableCritter.cpp
+  Entity.cpp
+c:\users\trupe\source\repos\truperton\fishy-waters-assignment\fishy_waters_assignment\fishy_waters_assignment\entity.cpp(49): warning C4244: 'argument': conversion from 'T' to 'float', possible loss of data
+          with
+          [
+              T=unsigned int
+          ]
+c:\users\trupe\source\repos\truperton\fishy-waters-assignment\fishy_waters_assignment\fishy_waters_assignment\entity.cpp(103): warning C4244: 'argument': conversion from 'T' to 'T', possible loss of data
+          with
+          [
+              T=unsigned int
+          ]
+          and
+          [
+              T=float
+          ]
+  Fishy_Waters_Assignment.cpp
 c:\users\trupe\source\repos\truperton\fishy-waters-assignment\fishy_waters_assignment\fishy_waters_assignment\fishy_waters_assignment.cpp(22): warning C4244: 'argument': conversion from 'T' to 'unsigned int', possible loss of data
           with
           [
               T=float
           ]
-  Fishy_Waters_Assignment.vcxproj -> C:\Users\trupe\Source\Repos\Truperton\Fishy-Waters-Assignment\Fishy_Waters_Assignment\Debug\Fishy_Waters_Assignment.exe
+  PlayerCharacter.cpp
+c:\users\trupe\source\repos\truperton\fishy-waters-assignment\fishy_waters_assignment\fishy_waters_assignment\playercharacter.cpp(25): warning C4244: 'argument': conversion from 'T' to 'float', possible loss of data
+          with
+          [
+              T=unsigned int
+          ]
+  TileMap.cpp
+c:\users\trupe\source\repos\truperton\fishy-waters-assignment\fishy_waters_assignment\fishy_waters_assignment\tilemap.cpp(27): warning C4267: '=': conversion from 'size_t' to 'unsigned short', possible loss of data
+c:\users\trupe\source\repos\truperton\fishy-waters-assignment\fishy_waters_assignment\fishy_waters_assignment\tilemap.cpp(28): warning C4267: '=': conversion from 'size_t' to 'unsigned short', possible loss of data
+c:\users\trupe\source\repos\truperton\fishy-waters-assignment\fishy_waters_assignment\fishy_waters_assignment\tilemap.cpp(46): warning C4244: 'argument': conversion from 'T' to 'T', possible loss of data
+          with
+          [
+              T=unsigned int
+          ]
+          and
+          [
+              T=float
+          ]
+c:\users\trupe\source\repos\truperton\fishy-waters-assignment\fishy_waters_assignment\fishy_waters_assignment\tilemap.cpp(47): warning C4244: 'argument': conversion from 'T' to 'T', possible loss of data
+          with
+          [
+              T=unsigned int
+          ]
+          and
+          [
+              T=float
+          ]
+c:\users\trupe\source\repos\truperton\fishy-waters-assignment\fishy_waters_assignment\fishy_waters_assignment\tilemap.cpp(48): warning C4244: 'argument': conversion from 'T' to 'T', possible loss of data
+          with
+          [
+              T=unsigned int
+          ]
+          and
+          [
+              T=float
+          ]
+c:\users\trupe\source\repos\truperton\fishy-waters-assignment\fishy_waters_assignment\fishy_waters_assignment\tilemap.cpp(49): warning C4244: 'argument': conversion from 'T' to 'T', possible loss of data
+          with
+          [
+              T=unsigned int
+          ]
+          and
+          [
+              T=float
+          ]
+c:\users\trupe\source\repos\truperton\fishy-waters-assignment\fishy_waters_assignment\fishy_waters_assignment\tilemap.cpp(52): warning C4244: 'argument': conversion from 'T' to 'T', possible loss of data
+          with
+          [
+              T=unsigned int
+          ]
+          and
+          [
+              T=float
+          ]
+c:\users\trupe\source\repos\truperton\fishy-waters-assignment\fishy_waters_assignment\fishy_waters_assignment\tilemap.cpp(53): warning C4244: 'argument': conversion from 'T' to 'T', possible loss of data
+          with
+          [
+              T=unsigned int
+          ]
+          and
+          [
+              T=float
+          ]
+c:\users\trupe\source\repos\truperton\fishy-waters-assignment\fishy_waters_assignment\fishy_waters_assignment\tilemap.cpp(54): warning C4244: 'argument': conversion from 'T' to 'T', possible loss of data
+          with
+          [
+              T=unsigned int
+          ]
+          and
+          [
+              T=float
+          ]
+c:\users\trupe\source\repos\truperton\fishy-waters-assignment\fishy_waters_assignment\fishy_waters_assignment\tilemap.cpp(55): warning C4244: 'argument': conversion from 'T' to 'T', possible loss of data
+          with
+          [
+              T=unsigned int
+          ]
+          and
+          [
+              T=float
+          ]
+  Generating Code...
+  LINK : C:\Users\trupe\source\repos\Truperton\Fishy-Waters-Assignment\Fishy_Waters_Assignment\Debug\Fishy_Waters_Assignment.exe not found or not built by the last incremental link; performing full link
+  Fishy_Waters_Assignment.vcxproj -> C:\Users\trupe\source\repos\Truperton\Fishy-Waters-Assignment\Fishy_Waters_Assignment\Debug\Fishy_Waters_Assignment.exe
