@@ -1,4 +1,38 @@
-﻿  PlayerCharacter.cpp
+﻿  BrownHog.cpp
+c:\users\trupe\source\repos\truperton\fishy-waters-assignment\fishy_waters_assignment\fishy_waters_assignment\brownhog.cpp(10): warning C4244: 'argument': conversion from 'T' to 'float', possible loss of data
+          with
+          [
+              T=unsigned int
+          ]
+  CapturableCritter.cpp
+c:\users\trupe\source\repos\truperton\fishy-waters-assignment\fishy_waters_assignment\fishy_waters_assignment\capturablecritter.cpp(15): warning C4244: 'argument': conversion from 'T' to 'float', possible loss of data
+          with
+          [
+              T=unsigned int
+          ]
+  Entity.cpp
+c:\users\trupe\source\repos\truperton\fishy-waters-assignment\fishy_waters_assignment\fishy_waters_assignment\entity.cpp(49): warning C4244: 'argument': conversion from 'T' to 'float', possible loss of data
+          with
+          [
+              T=unsigned int
+          ]
+c:\users\trupe\source\repos\truperton\fishy-waters-assignment\fishy_waters_assignment\fishy_waters_assignment\entity.cpp(146): warning C4244: 'argument': conversion from 'T' to 'T', possible loss of data
+          with
+          [
+              T=unsigned int
+          ]
+          and
+          [
+              T=float
+          ]
+  Fishy_Waters_Assignment.cpp
+c:\users\trupe\source\repos\truperton\fishy-waters-assignment\fishy_waters_assignment\fishy_waters_assignment\fishy_waters_assignment.cpp(25): warning C4244: 'argument': conversion from 'T' to 'unsigned int', possible loss of data
+          with
+          [
+              T=float
+          ]
+c:\users\trupe\source\repos\truperton\fishy-waters-assignment\fishy_waters_assignment\fishy_waters_assignment\fishy_waters_assignment.cpp(82): warning C4018: '<': signed/unsigned mismatch
+  PlayerCharacter.cpp
 c:\users\trupe\source\repos\truperton\fishy-waters-assignment\fishy_waters_assignment\fishy_waters_assignment\playercharacter.cpp(25): warning C4244: 'argument': conversion from 'T' to 'float', possible loss of data
           with
           [
@@ -80,4 +114,5 @@ c:\users\trupe\source\repos\truperton\fishy-waters-assignment\fishy_waters_assig
               T=float
           ]
   Generating Code...
+  LINK : C:\Users\trupe\source\repos\Truperton\Fishy-Waters-Assignment\Fishy_Waters_Assignment\Debug\Fishy_Waters_Assignment.exe not found or not built by the last incremental link; performing full link
   Fishy_Waters_Assignment.vcxproj -> C:\Users\trupe\source\repos\Truperton\Fishy-Waters-Assignment\Fishy_Waters_Assignment\Debug\Fishy_Waters_Assignment.exe
